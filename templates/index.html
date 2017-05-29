@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+    <script src="{{ url_for('static', filename='js/bootstrap-filestyle.min.js') }}"></script>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+      $('#upload-button').filestyle({
+        buttonText: 'File Selection'
+      })
+    </script>
+{% endblock %}
+{% block content %}
+          <h1 class="cover-heading">Validate Your <a href="http://idpf.org/epub">EPUB</a> Document</h1>
+          <p class="lead">You can submit multiple documents for validation.</p>
+          <form method="post" enctype="multipart/form-data" action="{{ upload_url }}">
+            <div class="form-group">
+            <!-- <label class="btn btn-default btn-file">
+              Add File <input type="file" name="" multiple hidden />
+            </label> -->
+            <input type="file" id="upload-button" name="{{ upload_field }}" multiple="multiple" />
+            </div>
+            <button type="submit" class="btn btn-default">Validate</button>
+          </form>
+{% endblock %}

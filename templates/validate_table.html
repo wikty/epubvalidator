@@ -1,0 +1,23 @@
+          <h3>File: {{ result.filename }}</h3>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>File</th>
+                <th>Line</th>
+                <th>Position</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for error in result.errors %}
+              <tr>
+                <td>{{ error.type }}</td>
+                <td>{{ error.file }}</td>
+                <td>{{ error.line }}</td>
+                <td>{{ error.position }}</td>
+                <td>{{ error.message }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>

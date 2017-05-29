@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Validate{% endblock %}
+{% block content %}
+  {% for result in results %}
+    {% include "validate_table.html" %}
+  {% endfor %}
+{% endblock %}
+{% block brand %}{% endblock %}
+{% block footer %}{% endblock %}
