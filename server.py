@@ -3,16 +3,18 @@ import os, subprocess, json
 from flask import Flask, render_template, url_for, redirect, session, escape, request
 from werkzeug.utils import secure_filename
 
-from utils import is_allowed_file
+from utils import is_allowed_file, get_unique_filename
 from epub import check
 
+epub_ext = 'epub'
+stdout_encoding = 'gbk'
 currentdir = os.path.abspath(os.getcwd())
 config = {
 	'sitename': 'Epub-Validator',
 	'upload_field': 'file[]',
 	'epubcheck_path': os.sep.join([currentdir, 'bin', 'epubcheck-4.0.1', 'epubcheck.jar']),
 	'upload_folder': os.sep.join([currentdir, 'upload']),
-	'allowed_extensions': set(['epub'])
+	'allowed_extensions': set([epub_ext])
 }
 
 app = Flask(__name__)
@@ -35,13 +37,16 @@ def upload():
 	files = []
 	for file in request.files.getlist(config['upload_field']):
 		if file and file.filename and is_allowed_file(file.filename, config['allowed_extensions']):
-			filename = secure_filename(file.filename)
+			# filename = secure_filename(file.filename)
+			basename, ext = os.path.splitext(file.filename)
+			filename = get_unique_filename(ext)
 			filename = os.path.join(config['upload_folder'], filename)
 			file.save(filename)
-			files.append(filename)
+			files.append((basename, filename))
 
-	for filename in files:
-		result = check(filename, config['epubcheck_path'])
+	for basename, path in files:
+		result = check(basename, path, config['epubcheck_path'],
+					   stdout_encoding)
 		results.append(result)
 	
 	session['results'] = json.dumps(results, ensure_ascii=False)

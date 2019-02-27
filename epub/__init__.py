@@ -1,16 +1,16 @@
 import subprocess, os, re
 
-def check(filename, epubcheck_path):
+def check(basename, epubfile_path, epubcheck_path, stdout_encoding):
 	try:
 		output = subprocess.check_output(
-			['java', '-jar', epubcheck_path, filename],
+			['java', '-jar', epubcheck_path, epubfile_path],
 			stderr=subprocess.STDOUT,
 			shell=True
 		)
 	except subprocess.CalledProcessError as e:
 		output = e.output
 
-	output = output.decode('gbk')
+	output = output.decode(stdout_encoding)
 	errors = []
 	# regex = re.compile(r'\(\d+,\d+\)')
 	for line in output.splitlines():
@@ -30,6 +30,6 @@ def check(filename, epubcheck_path):
 			'message': error_message
 		})
 	return {
-		'filename': os.path.basename(filename),
+		'filename': basename,
 		'errors': errors
 	}
