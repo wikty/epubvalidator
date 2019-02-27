@@ -3,7 +3,7 @@ import os, subprocess, json
 from flask import Flask, render_template, url_for, redirect, session, escape, request
 from werkzeug.utils import secure_filename
 
-from utils import post_file, is_allowed_file
+from utils import is_allowed_file
 from epub import check
 
 currentdir = os.path.abspath(os.getcwd())
@@ -55,7 +55,3 @@ def validate():
 		return redirect(url_for('index'))
 	results = session['results']
 	return render_template('validate.html', results=json.loads(results))
-
-if __name__ == '__main__':
-	with app.test_client() as client:
-		post_file(client, 'epub/test.epub', '/upload')
