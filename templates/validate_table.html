@@ -1,4 +1,7 @@
-          <h3>File: {{ result.filename }}</h3>
+          {% if not result.errors %}
+          <h3>File: {{ result.filename }} - <small class="text-success">Success</small></h3>
+          {% else %}
+          <h3>File: {{ result.filename }} - <small class="text-danger">Fail</small></h3>
           <table class="table table-bordered">
             <thead>
               <tr>
@@ -21,3 +24,5 @@
               {% endfor %}
             </tbody>
           </table>
+          {% endif %}
+          
